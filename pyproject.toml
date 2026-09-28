@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pai-program-intelligence"
+version = "0.0.0"
+description = "Independent Program Intelligence plugin for PAI OS"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/MusawirKtk/pai-os-Program-Intelligence"
+
+[tool.setuptools.packages.find]
+where = ["src"]
