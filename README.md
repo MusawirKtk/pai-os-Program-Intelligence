@@ -2,8 +2,8 @@
 
 Independent Program Intelligence plugin for Placement AI (`pai-os`).
 
-> Status: Milestone 1 data contracts and Milestone 2 source layer are implemented.
-> Fact extraction, database persistence, and host integration are pending.
+> Status: Milestones 1–3 cover data contracts, source retrieval, and conservative
+> fact extraction. Verification, database persistence, and host integration are pending.
 
 The complete product and architecture contract is in the
 [Developer Handbook](PAI_PROGRAM_INTELLIGENCE_DEVELOPER_HANDBOOK.md).
@@ -26,7 +26,8 @@ Planned V1 capabilities:
 `ResearchClient` provides search and fetch operations. Discovery accepts
 trusted official institution domains from a vetted source, filters search
 results to those domains, classifies page URLs, and orders them by source
-priority. Search snippets are leads only. A fetched page retains its extracted
+priority while preserving search rank among equal-priority pages. Search
+snippets are leads only. A fetched page retains its extracted
 text and source metadata for later fact extraction; fetching does not verify
 any requirement, fee, or deadline.
 
@@ -45,6 +46,38 @@ Tavily API behavior was checked against the official
 [Search](https://docs.tavily.com/documentation/api-reference/endpoint/search)
 and [Extract](https://docs.tavily.com/documentation/api-reference/endpoint/extract)
 documentation. Tests use local fake responses and require no API key.
+
+## Extraction and normalization
+
+`extract_program` reads fetched Markdown and returns source-linked claims plus
+the original extracted text. It parses explicit program headings, duration,
+ECTS credits, requirements, tuition or other fees, and application deadlines. A single source
+produces `unverified` claims; ambiguous currencies, dates, qualification
+equivalencies, and unsupported formats remain `needs_review`. Missing values
+are reported as not observed, never guessed.
+
+For a live one-source check, create `.env` beside this README using
+[`.env.example`](.env.example) and place `TAVILY_API_KEY` there. The `.env` file
+is ignored by Git. The library reads only process environment variables; the
+standalone `smoke_m3.py` script can also read this repository's own `.env`.
+It never reads the separate `pai-os` repository's configuration.
+
+```powershell
+python -B smoke_m3.py --domain manchester.ac.uk --url https://www.manchester.ac.uk/study/masters/courses/list/02362/msc-statistics --publisher "University of Manchester" --expected-name "MSc Statistics"
+```
+
+The script also accepts `--query` instead of `--url`. Use `--expected-name` to
+reject a fetched page that does not establish the requested program identity.
+It reports claim counts and field names, not the key or page text. Live pages
+often contain ambiguous prose, so review-needed claims are expected; this
+smoke test does not perform cross-source verification.
+
+Run the offline test suite with `PYTHONPATH=src` set (or install this package
+in editable mode). For example, in PowerShell:
+
+```powershell
+$env:PYTHONPATH='src'; python -B -m unittest discover -s tests
+```
 
 ## Integration boundary
 

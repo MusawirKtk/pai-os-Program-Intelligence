@@ -171,7 +171,8 @@ async def discover_official_sources(
             continue
         source_type = classify_official_url(url)
         candidates.setdefault(url, SourceCandidate(url, source_type, _PRIORITY[source_type]))
-    return sorted(candidates.values(), key=lambda candidate: (candidate.priority, candidate.url))
+    # Python's stable sort preserves search rank among equally authoritative pages.
+    return sorted(candidates.values(), key=lambda candidate: candidate.priority)
 
 
 async def fetch_official_source(
