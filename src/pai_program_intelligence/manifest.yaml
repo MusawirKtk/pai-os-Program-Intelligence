@@ -1,0 +1,26 @@
+id: pai.program_intelligence
+version: 0.1.0
+name: PAI Program Intelligence
+audience:
+  - operator
+
+capabilities:
+  - program.search
+  - program.research
+  - program.eligibility
+  - program.compare
+
+context_scopes:
+  optional:
+    - education
+    - goals
+    - finance
+    - tests
+    - preferences
+    - applications
+
+permissions:
+  - web.read
+
+risk: read
+student_facing: false
