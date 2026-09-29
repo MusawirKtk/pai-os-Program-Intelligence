@@ -2,8 +2,9 @@
 
 Independent Program Intelligence plugin for Placement AI (`pai-os`).
 
-> Status: Milestones 1–3 cover data contracts, source retrieval, and conservative
-> fact extraction. Verification, database persistence, and host integration are pending.
+> Status: Milestones 1–3 are implemented. Milestone 4 now has offline verification,
+> deduplication, freshness, PostgreSQL migrations, and cache code. Applying the
+> migration against a separate live database remains untested until one is provided.
 
 The complete product and architecture contract is in the
 [Developer Handbook](PAI_PROGRAM_INTELLIGENCE_DEVELOPER_HANDBOOK.md).
@@ -78,6 +79,35 @@ in editable mode). For example, in PowerShell:
 ```powershell
 $env:PYTHONPATH='src'; python -B -m unittest discover -s tests
 ```
+
+## Verification and public cache
+
+Milestone 4 cross-checks current official pages for a resolved program. Two
+distinct, non-identical pages can corroborate a fact; conflicting values retain
+both source IDs. Stale, ambiguous, and missing facts stay explicit. The public
+cache keeps raw page snapshots and claims alongside the latest normalized
+requirements, costs, and verification states.
+
+The cache uses its own PostgreSQL database and `program_intelligence` schema.
+Set `PROGRAM_INTELLIGENCE_DATABASE_URL` in the plugin process environment;
+`connect_database()` intentionally does not read the PAI host's `DATABASE_URL`
+or any host database. `apply_migrations()` applies packaged SQL migrations
+transactionally. A placeholder is in [`.env.example`](.env.example); the
+library does not load `.env` automatically. Do not point this variable at the
+PAI application database during standalone development. No database has been
+created or migrated by the repository's offline tests.
+
+After provisioning a separate PostgreSQL database, add its URL to this repo's
+ignored `.env`, confirm it is **not** the PAI application database, then run:
+
+```powershell
+python -B smoke_m4.py --apply
+```
+
+The command reports applied migration names and table count, never the URL.
+It has not been run against a live database yet.
+
+The actual PAI Core registration and student-context bridge remain Milestone 7.
 
 ## Integration boundary
 

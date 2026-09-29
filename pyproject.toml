@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Independent Program Intelligence plugin for PAI OS"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["psycopg[binary]>=3,<4"]
 
 [project.urls]
 Repository = "https://github.com/MusawirKtk/pai-os-Program-Intelligence"
@@ -17,4 +17,4 @@ Repository = "https://github.com/MusawirKtk/pai-os-Program-Intelligence"
 where = ["src"]
 
 [tool.setuptools.package-data]
-pai_program_intelligence = ["manifest.yaml"]
+pai_program_intelligence = ["manifest.yaml", "migrations/*.sql"]
