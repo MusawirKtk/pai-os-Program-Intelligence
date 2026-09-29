@@ -1,0 +1,44 @@
+{
+  "program_id": "demo-msc-ai",
+  "requirements": [
+    {
+      "requirement_id": "degree",
+      "type": "academic_degree",
+      "raw_text": "A relevant bachelor's degree in computer science is required",
+      "required": true,
+      "verification_status": "verified",
+      "source_id": "demo-official-1",
+      "normalized": {"level": "bachelors", "field": ["computer_science"]}
+    },
+    {
+      "requirement_id": "language",
+      "type": "language_test",
+      "raw_text": "IELTS 6.5 overall is required",
+      "required": true,
+      "verification_status": "verified",
+      "source_id": "demo-official-2",
+      "normalized": {"test": "IELTS", "minimum_overall": 6.5}
+    },
+    {
+      "requirement_id": "math",
+      "type": "course_prerequisite",
+      "raw_text": "Mathematics coursework is required",
+      "required": true,
+      "verification_status": "verified",
+      "source_id": "demo-official-1",
+      "normalized": {"subjects": ["mathematics"]}
+    }
+  ],
+  "context": {
+    "education": {
+      "current_or_highest": {
+        "level": "bachelors",
+        "completed": true,
+        "field": "computer_science",
+        "title": "BS Computer Science",
+        "grade": {"value": 3.2, "scale": 4}
+      }
+    },
+    "tests": [{"test": "IELTS", "overall": 7}]
+  }
+}

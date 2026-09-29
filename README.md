@@ -2,9 +2,9 @@
 
 Independent Program Intelligence plugin for Placement AI (`pai-os`).
 
-> Status: Milestones 1–3 are implemented. Milestone 4 now has offline verification,
-> deduplication, freshness, PostgreSQL migrations, and cache code. Applying the
-> migration against a separate live database remains untested until one is provided.
+> Status: Milestones 1–5 are implemented. The Milestone 4 migration has been
+> exercised against an isolated local PostgreSQL database. Milestone 5 supports
+> standalone requirement-by-requirement evaluation of supplied context.
 
 The complete product and architecture contract is in the
 [Developer Handbook](PAI_PROGRAM_INTELLIGENCE_DEVELOPER_HANDBOOK.md).
@@ -105,7 +105,38 @@ python -B smoke_m4.py --apply
 ```
 
 The command reports applied migration names and table count, never the URL.
-It has not been run against a live database yet.
+It is safe to rerun: previously applied migrations are skipped.
+
+## Eligibility (Milestone 5)
+
+`evaluate_eligibility(program_id, requirements, context)` evaluates documented
+requirements against a task-scoped context in memory. It returns a status for
+each requirement, cited program source IDs, an overall documented match, and
+the specific context still needed. It never stores student data, queries the
+PAI Vault, or predicts admission. Only requirements marked `verified` can
+yield `MET` or `NOT_MET`; the caller must refresh stale source verification
+before evaluation. Degree evidence must explicitly say `completed: true` to
+count as an awarded qualification. Ambiguous equivalences and incomparable
+grading scales remain `NEEDS_REVIEW`.
+
+Run the synthetic handbook-style example without network or database access:
+
+```powershell
+python -B smoke_m5.py
+```
+
+To try your own **task-scoped** context, copy
+[`examples/m5_demo.json`](examples/m5_demo.json) outside the Git repository,
+edit its `context` and public `requirements`, then run
+`python -B smoke_m5.py --input C:\path\to\your-fixture.json`. Do not put real
+student identity or full profiles in a committed fixture. A `verified` label
+in hand-written JSON is only test input, not evidence that a real requirement
+has been verified. The eventual live flow must use researched source-backed
+requirements.
+
+This standalone context-to-requirement test is available now. Program
+comparison follows in Milestone 6; the complete PAI user-context-to-live
+research flow depends on Milestone 7 host registration.
 
 The actual PAI Core registration and student-context bridge remain Milestone 7.
 
