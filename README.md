@@ -2,9 +2,10 @@
 
 Independent Program Intelligence plugin for Placement AI (`pai-os`).
 
-> Status: Milestones 1–5 are implemented. The Milestone 4 migration has been
-> exercised against an isolated local PostgreSQL database. Milestone 5 supports
-> standalone requirement-by-requirement evaluation of supplied context.
+> Status: Milestones 1–6 are implemented, with a standalone end-to-end runner.
+> The Milestone 4 migration and a live one-program research run have been
+> exercised against the isolated local PostgreSQL database. Host registration
+> remains Milestone 7.
 
 The complete product and architecture contract is in the
 [Developer Handbook](PAI_PROGRAM_INTELLIGENCE_DEVELOPER_HANDBOOK.md).
@@ -134,11 +135,61 @@ in hand-written JSON is only test input, not evidence that a real requirement
 has been verified. The eventual live flow must use researched source-backed
 requirements.
 
-This standalone context-to-requirement test is available now. Program
-comparison follows in Milestone 6; the complete PAI user-context-to-live
-research flow depends on Milestone 7 host registration.
+This simpler context-to-requirement test remains useful when you already have
+documented requirements. It does not research or verify the JSON claims.
 
-The actual PAI Core registration and student-context bridge remain Milestone 7.
+## Comparison and standalone end-to-end test (Milestone 6)
+
+`compare_programs()` returns a 12-dimension evidence matrix for two or more
+researched programs, including requirement matches, tuition, duration, location,
+mode, intakes, deadlines, curriculum, application materials, and funding. Each
+cell retains verification state and source IDs. Missing, stale, and conflicting
+values stay visible; the plugin never ranks programs or converts currencies.
+Only dimensions with source-backed data can be verified.
+
+The standalone runner executes official-source discovery/fetch, extraction,
+verification, public-cache persistence (live mode), eligibility, and comparison
+without PAI/V3. It accepts **task-scoped** local JSON, not a student profile.
+`context` is used in memory for matching and is never sent to Tavily or stored
+in the public database. Keep real student identity and full profiles out of the
+repository and search queries.
+
+Run the fully offline synthetic two-program example (no key or DB required):
+
+```powershell
+.\.venv\Scripts\python.exe -B standalone_cli.py --input examples/standalone_demo.json
+```
+
+To try your own context, copy the example JSON **outside** the repository,
+replace `context`, and keep the synthetic `pages` or supply your own public-page
+fixtures. The `as_of` timestamp is available only in offline mode, for
+repeatable freshness tests. Synthetic pages can exercise logic but do not prove
+real-world program facts.
+
+For a live one-program run using this repo's ignored `.env` and the **separate
+plugin PostgreSQL database**:
+
+```powershell
+.\.venv\Scripts\python.exe -B standalone_cli.py --input examples/live_demo.json --live
+```
+
+Live input may contain multiple program targets for comparison. For each,
+provide `institution` (`institution_id`, `name`, ISO country), `expected_name`,
+`official_domains`, and either `official_url`, `query`, or both. Optional
+`source_urls` lets you add more official pages for cross-checking. Every fetched
+page must establish the expected program name in its heading; rejected URLs
+are reported. Search snippets are only leads. At least two distinct current
+official pages making the same claim are needed for verification, so a normal
+one-page live run will often return `unverified`/`needs_review`.
+
+The current extractor handles only explicit headings and selected duration,
+ECTS, tuition, deadline, and requirement patterns. Other handbook dimensions
+may correctly appear as `not_found` or `needs_review`; the runner is a way to
+expose and test these gaps before PAI integration, not proof that every global
+program page is fully understood. Live Tavily access requires network egress.
+
+The actual PAI Core registration and student-context bridge remain Milestone 7;
+they are **not** required to test the plugin standalone.
 
 ## Integration boundary
 

@@ -1,0 +1,58 @@
+{
+  "as_of": "2026-09-29T12:00:00Z",
+  "context": {
+    "education": {
+      "current_or_highest": {
+        "level": "bachelors",
+        "completed": true,
+        "field": "computer_science",
+        "title": "BS Computer Science"
+      }
+    },
+    "tests": [{"test": "IELTS", "overall": 7}]
+  },
+  "programs": [
+    {
+      "institution": {"institution_id": "demo-uni", "name": "Demo University", "country": "GB", "official_url": "https://demo.example.edu"},
+      "expected_name": "MSc Artificial Intelligence",
+      "official_domains": ["demo.example.edu"],
+      "official_url": "https://demo.example.edu/programs/ai",
+      "source_urls": ["https://demo.example.edu/catalog/ai"],
+      "pages": [
+        {
+          "url": "https://demo.example.edu/programs/ai",
+          "title": "MSc Artificial Intelligence",
+          "fetched_at": "2026-09-29T09:00:00Z",
+          "text": "# MSc Artificial Intelligence\n## Duration\n2 years\n## Entry requirements\n- IELTS 6.5 overall\n- Mathematics coursework required\n## Tuition\nGBP 10000 per year"
+        },
+        {
+          "url": "https://demo.example.edu/catalog/ai",
+          "title": "MSc Artificial Intelligence catalogue",
+          "fetched_at": "2026-09-29T10:00:00Z",
+          "text": "# MSc Artificial Intelligence\n## Entry requirements\n- IELTS 6.5 overall\n- Mathematics coursework required\n## Duration\n2 years\n## Tuition\nGBP 10000 per year"
+        }
+      ]
+    },
+    {
+      "institution": {"institution_id": "demo-uni", "name": "Demo University", "country": "GB", "official_url": "https://demo.example.edu"},
+      "expected_name": "MSc Data Science",
+      "official_domains": ["demo.example.edu"],
+      "official_url": "https://demo.example.edu/programs/data-science",
+      "source_urls": ["https://demo.example.edu/catalog/data-science"],
+      "pages": [
+        {
+          "url": "https://demo.example.edu/programs/data-science",
+          "title": "MSc Data Science",
+          "fetched_at": "2026-09-29T09:00:00Z",
+          "text": "# MSc Data Science\n## Duration\n1 year\n## Entry requirements\n- IELTS 7.5 overall\n## Tuition\nGBP 12000 per year"
+        },
+        {
+          "url": "https://demo.example.edu/catalog/data-science",
+          "title": "MSc Data Science catalogue",
+          "fetched_at": "2026-09-29T10:00:00Z",
+          "text": "# MSc Data Science\n## Entry requirements\n- IELTS 7.5 overall\n## Duration\n1 year\n## Tuition\nGBP 12000 per year"
+        }
+      ]
+    }
+  ]
+}

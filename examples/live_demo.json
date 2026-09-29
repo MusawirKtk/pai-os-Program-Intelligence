@@ -1,0 +1,27 @@
+{
+  "context": {
+    "education": {
+      "current_or_highest": {
+        "level": "bachelors",
+        "completed": true,
+        "field": "mathematics",
+        "title": "BSc Mathematics"
+      }
+    },
+    "tests": [{"test": "IELTS", "overall": 7}]
+  },
+  "programs": [
+    {
+      "institution": {
+        "institution_id": "university-of-manchester",
+        "name": "University of Manchester",
+        "country": "GB",
+        "official_url": "https://www.manchester.ac.uk"
+      },
+      "expected_name": "MSc Statistics",
+      "official_domains": ["manchester.ac.uk"],
+      "official_url": "https://www.manchester.ac.uk/study/masters/courses/list/02362/msc-statistics",
+      "query": "MSc Statistics University of Manchester official programme"
+    }
+  ]
+}
